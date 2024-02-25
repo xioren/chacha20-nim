@@ -9,7 +9,7 @@ type
     usedKeyStream: uint
     keyStream: array[16 * sizeof(uint32), uint8]
 
-const keySize = 32
+const ChaChaKeySize = 32
 
 #######################################################################
 
@@ -72,7 +72,7 @@ proc quarterRound(a, b, c, d: var uint32) =
 
 proc init(ctx: var ChaCha20Ctx, key: openArray[uint8],
           keySize: int, nonce: openArray[uint8], nonceSize: int) =
-  if keySize != keySize:
+  if keySize != ChaChaKeySize:
     raise newException(ValueError, "key must be 32 bytes")
   if nonceSize notin [8, 12, 16]:
     raise newException(ValueError, "nonce must be 8/12/24 bytes")
@@ -272,7 +272,7 @@ proc seek*(ctx: var ChaCha20Ctx, blockLow, blockHigh: uint64, offset: uint) =
 proc hChaCha20(key, nonce16: openArray[uint8]): seq[byte] =
   ## xchacha20
   var ctx: ChaCha20Ctx
-  ctx.init(key, keySize, nonce16, 16)
+  ctx.init(key, key.len, nonce16, 16)
 
   var h: array[16, uint32]
   ctx.generateBlock(h)
