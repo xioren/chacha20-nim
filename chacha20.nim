@@ -320,7 +320,7 @@ proc derivePoly1305KeyPair*(key: openArray[byte], nonce: openArray[byte]): (seq[
     derivedKey: seq[byte]
 
   if nonce.len == 8:
-    paddedNonce = @[0.byte, 0.byte, 0.byte, 0.byte] & toSeq(nonce)
+    paddedNonce = @[0x00'u8, 0x00'u8, 0x00'u8, 0x00'u8] & toSeq(nonce)
   elif nonce.len == 12:
     paddedNonce = toSeq(nonce)
   else:
