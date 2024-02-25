@@ -306,7 +306,7 @@ proc newChaCha20Ctx*(key, nonce: string): ChaCha20Ctx =
 
 
 proc derivePoly1305KeyPair*(key: openArray[byte], nonce: openArray[byte]): (seq[byte], seq[byte], seq[byte]) =
-  if key.len != 32:
+  if key.len != ChaChaKeySize:
     raise newException(ValueError, "Poly1305 with ChaCha20 requires a 32-byte key")
   
   const emptyData: array[32, uint8] = [
